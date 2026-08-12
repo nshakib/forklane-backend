@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { Role } from "../../../generated/prisma/enums";
+import { Role, UserStatus } from "../../../generated/prisma/enums";
 import config from "../config";
 import { prisma } from "../lib/prisma";
 import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
+import { z } from 'zod'
 
 declare global {
     namespace Express {
@@ -19,8 +20,6 @@ declare global {
     }
 }
 
-// auth(Role.ADMIN, Role.USER, Role.Author)
-// auth() => ...requiredRoles => [Role.ADMIN, Role.USER, Role.AUTHOR]
 export const auth = (...requiredRoles: Role[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.cookies.accessToken ?
@@ -47,20 +46,18 @@ export const auth = (...requiredRoles: Role[]) => {
         }
 
         const user = await prisma.user.findUnique({
-            where: {
-                id: userId,
-                email,
-                name,
-                role
-            }
+            where: { id: userId }
         });
 
-        if (!user) {
+        if (!user || user.email !== email || user.name !== name || user.role !== role) {
             throw new Error("User not found. Please log in again.");
         }
 
-        if (user.status === "BLOCKED") {
+        if (user.status === UserStatus.BLOCKED) {
             throw new Error("Your account has been blocked. Please contact support.");
+        }
+        if (user.status === UserStatus.DELETED) {
+            throw new Error("This account no longer exists.");
         }
 
         req.user = {
@@ -71,7 +68,16 @@ export const auth = (...requiredRoles: Role[]) => {
         }
 
         next();
-
-    }
-    )
+    })
 }
+
+export const validateRequest = (schema: z.ZodType) =>
+    catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        await schema.parseAsync({
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            cookies: req.cookies,
+        })
+        next()
+    })
