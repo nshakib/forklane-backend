@@ -1,0 +1,24 @@
+enum Role {
+  USER
+  MANAGER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum AuthProvider {
+  CREDENTIAL
+  GOOGLE
+}

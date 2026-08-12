@@ -1,0 +1,17 @@
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  password     String
+  role         Role       @default(USER)
+  status       UserStatus @default(ACTIVE)
+  avatarUrl    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  restaurants  Restaurant[] @relation("RestaurantOwner")
+  orders       Order[]
+  reviews      Review[]
+
+  @@map("users")
+}

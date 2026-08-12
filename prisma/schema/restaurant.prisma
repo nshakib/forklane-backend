@@ -1,0 +1,29 @@
+model Restaurant {
+  id           String     @id @default(uuid())
+  name         String
+  slug         String     @unique
+  tagline      String?
+  description  String
+  cuisine      String
+  priceLevel   Int
+  rating       Float      @default(0)
+  reviewCount  Int        @default(0)
+  deliveryMins Int
+  address      String
+  city         String
+  heroImage    String
+  gallery      String[]
+  isFeatured   Boolean    @default(false)
+  deletedAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  ownerId      String
+  owner        User       @relation("RestaurantOwner", fields: [ownerId], references: [id])
+
+  menuItems    MenuItem[]
+  orders       Order[]
+  reviews      Review[]
+
+  @@map("restaurants")
+}

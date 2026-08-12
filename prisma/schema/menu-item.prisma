@@ -1,0 +1,19 @@
+model MenuItem {
+  id           String     @id @default(uuid())
+  name         String
+  description  String?
+  price        Decimal    @db.Decimal(10, 2)
+  category     String
+  image        String?
+  isAvailable  Boolean    @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+
+  orderItems   OrderItem[]
+
+  @@map("menu_items")
+}
