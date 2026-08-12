@@ -1,4 +1,4 @@
-import { Role } from "../../../generated/prisma/browser"
+import { Role } from "../../../../generated/prisma/browser"
 
 export interface ILoginUserPayload {
     email: string
