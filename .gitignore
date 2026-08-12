@@ -5,6 +5,8 @@ node_modules
 dist
 
 /src/generated
+generated
+generated/prisma
 
 # Lock Files
 pnpm-lock.yaml

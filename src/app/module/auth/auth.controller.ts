@@ -5,34 +5,35 @@ import { sendResponse } from '../../utils/sendResponse'
 import { IRequestUser } from './auth.interface'
 import { AuthService } from './auth.service'
 
-const registerPatient = catchAsync(async (req: Request, res: Response) => {
-    const payload = req.body
-    const result = await AuthService.registerPatient(payload)
+const cookieOptions = {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax" as const,
+}
 
-    const { accessToken, refreshToken, user, patient } = result
+const registerUser = catchAsync(async (req: Request, res: Response) => {
+    const payload = req.body
+    const result = await AuthService.registerUser(payload)
+
+    const { accessToken, refreshToken, user } = result
 
     res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 // 24 hour or 1 day
+        ...cookieOptions,
+        maxAge: 1000 * 60 * 60 * 24 // 24 hours
     })
     res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        ...cookieOptions,
         maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
     })
 
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
-        message: 'Patient registered successfully',
+        message: 'User registered successfully',
         data: {
             accessToken,
             refreshToken,
             user,
-            patient,
         },
     })
 })
@@ -43,16 +44,12 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     const { accessToken, refreshToken } = result
 
     res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 // 24 hour or 1 day
+        ...cookieOptions,
+        maxAge: 1000 * 60 * 60 * 24
     })
     res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+        ...cookieOptions,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
     sendResponse(res, {
@@ -90,16 +87,12 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const { accessToken, refreshToken: newRefreshToken } = result
 
     res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 // 24 hour or 1 day
+        ...cookieOptions,
+        maxAge: 1000 * 60 * 60 * 24
     })
     res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+        ...cookieOptions,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
     sendResponse(res, {
@@ -115,7 +108,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 
 export const AuthController = {
-    registerPatient,
+    registerUser,
     loginUser,
     getMe,
     refreshToken,

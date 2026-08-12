@@ -6,13 +6,13 @@ import { prisma } from '../../lib/prisma'
 import { jwtUtils } from '../../utils/jwt'
 import {
     ILoginUserPayload,
-    IRegisterPatientPayload,
+    IRegisterUserPayload,
     IRequestUser
 } from './auth.interface'
 
 
-const registerPatient = async (payload: IRegisterPatientPayload) => {
-    const { name, password } = payload
+const registerUser = async (payload: IRegisterUserPayload) => {
+    const { name, password, role } = payload
     const email = payload.email.trim().toLowerCase()
 
     const isUserExists = await prisma.user.findUnique({
@@ -25,23 +25,17 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
 
     const hashedPassword = await bcrypt.hash(password, 8)
 
-    const createdUser = await prisma.user.create({
+    const user = await prisma.user.create({
         data: {
             name,
             email,
             password: hashedPassword,
-            role: Role.PATIENT,
+            role: role ?? Role.USER,
             status: UserStatus.ACTIVE,
-            emailVerified: false,
-            patient: {
-                create: { name, email },
-            },
         },
         omit: { password: true },
-        include: { patient: true },
     })
 
-    const { patient, ...user } = createdUser
     const jwtPayload = {
         userId: user.id,
         name: user.name,
@@ -63,7 +57,6 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
 
     return {
         user,
-        patient,
         accessToken,
         refreshToken
     }
@@ -85,8 +78,12 @@ const loginUser = async (payload: ILoginUserPayload) => {
         throw new Error('User is blocked')
     }
 
-    if (user.isDeleted || user.status === UserStatus.DELETED) {
-        throw new Error('User is deleted')
+    if (user.status === UserStatus.DELETED) {
+    throw new Error('User is deleted')
+}
+
+    if (!user.password) {
+        throw new Error('This account uses Google sign-in. Please continue with Google.')
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password)
@@ -125,9 +122,6 @@ const getMe = async (user: IRequestUser) => {
         where: {
             id: user.userId,
         },
-        include: {
-            patient: true,
-        },
         omit: {
             password: true,
         },
@@ -153,7 +147,7 @@ const refreshToken = async (token: string) => {
         where: { id: data.userId },
     })
 
-    if (!user || user.isDeleted || user.status !== UserStatus.ACTIVE) {
+    if (!user || user.status === UserStatus.DELETED || user.status !== UserStatus.ACTIVE) {
         throw new Error('User is inactive or not found')
     }
 
@@ -185,7 +179,7 @@ const refreshToken = async (token: string) => {
 
 
 export const AuthService = {
-    registerPatient,
+    registerUser,
     loginUser,
     getMe,
     refreshToken
