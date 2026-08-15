@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import httpStatus from 'http-status'
-import { catchAsync } from '../../utils/catchAsync'
-import { sendResponse } from '../../utils/sendResponse'
-import { IRequestUser } from '../auth/auth.interface'
-import { ICreateMenuItemPayload, IUpdateMenuItemPayload } from './menuItem.interface'
-import { MenuItemService } from './menuItem.service'
+import { catchAsync } from '../../utils/catchAsync.js'
+import { sendResponse } from '../../utils/sendResponse.js'
+import { IRequestUser } from '../auth/auth.interface.js'
+import { ICreateMenuItemPayload, IUpdateMenuItemPayload } from './menuItem.interface.js'
+import { MenuItemService } from './menuItem.service.js'
 
 const getMenuItems = catchAsync(async (req: Request, res: Response) => {
     const restaurantId = req.params.restaurantId as string

@@ -1,7 +1,7 @@
 import { Role } from '../../../../generated/prisma/enums'
-import { prisma } from '../../lib/prisma'
-import { IRequestUser } from '../auth/auth.interface'
-import { ICreateMenuItemPayload, IUpdateMenuItemPayload } from './menuItem.interface'
+import { prisma } from '../../lib/prisma.js'
+import { IRequestUser } from '../auth/auth.interface.js'
+import { ICreateMenuItemPayload, IUpdateMenuItemPayload } from './menuItem.interface.js'
 
 const assertCanManage = async (restaurantId: string, requestUser: IRequestUser) => {
     const restaurant = await prisma.restaurant.findFirst({

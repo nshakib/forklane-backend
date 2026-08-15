@@ -1,5 +1,5 @@
-import { prisma } from '../../lib/prisma'
-import { ICreateReviewPayload } from './review.interface'
+import { prisma } from '../../lib/prisma.js'
+import { ICreateReviewPayload } from './review.interface.js'
 
 const recalculateRestaurantRating = async (restaurantId: string) => {
     const aggregate = await prisma.review.aggregate({

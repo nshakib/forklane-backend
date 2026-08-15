@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import httpStatus from 'http-status'
-import { catchAsync } from '../../utils/catchAsync'
-import { sendResponse } from '../../utils/sendResponse'
-import { IRequestUser } from '../auth/auth.interface'
-import { ICreateReviewPayload } from './review.interface'
-import { ReviewService } from './review.service'
+import { catchAsync } from '../../utils/catchAsync.js'
+import { sendResponse } from '../../utils/sendResponse.js'
+import { IRequestUser } from '../auth/auth.interface.js'
+import { ICreateReviewPayload } from './review.interface.js'
+import { ReviewService } from './review.service.js'
 
 const upsertReview = catchAsync(async (req: Request, res: Response) => {
     const user = req.user as unknown as IRequestUser

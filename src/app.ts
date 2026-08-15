@@ -3,15 +3,15 @@ import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import httpStatus from "http-status";
 import config from "./app/config";
-import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
-import { notFound } from "./app/middlewares/notFound";
-import { AuthRoutes } from "./app/module/auth/auth.route";
-import { UserRoutes } from "./app/module/user/user.route";
-import { RestaurantRoutes } from "./app/module/restaurant/restaurant.route";
-import { MenuItemRoutes } from "./app/module/menuItem/menuItem.route";
-import { OrderRoutes } from "./app/module/order/order.route";
-import { ReviewRoutes } from "./app/module/review/review.route";
-import { DashboardRoutes } from "./app/module/dashboard/dashboard.route";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler.js";
+import { notFound } from "./app/middlewares/notFound.js";
+import { AuthRoutes } from "./app/module/auth/auth.route.js";
+import { UserRoutes } from "./app/module/user/user.route.js";
+import { RestaurantRoutes } from "./app/module/restaurant/restaurant.route.js";
+import { MenuItemRoutes } from "./app/module/menuItem/menuItem.route.js";
+import { OrderRoutes } from "./app/module/order/order.route.js";
+import { ReviewRoutes } from "./app/module/review/review.route.js";
+import { DashboardRoutes } from "./app/module/dashboard/dashboard.route.js";
 
 const app: Application = express();
 

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import httpStatus from 'http-status'
-import { catchAsync } from '../../utils/catchAsync'
-import { sendResponse } from '../../utils/sendResponse'
-import { IRequestUser } from '../auth/auth.interface'
-import { ICreateRestaurantPayload, IRestaurantFilters, IUpdateRestaurantPayload } from './restaurant.interface'
-import { RestaurantService } from './restaurant.service'
+import { catchAsync } from '../../utils/catchAsync.js'
+import { sendResponse } from '../../utils/sendResponse.js'
+import { IRequestUser } from '../auth/auth.interface.js'
+import { ICreateRestaurantPayload, IRestaurantFilters, IUpdateRestaurantPayload } from './restaurant.interface.js'
+import { RestaurantService } from './restaurant.service.js'
 
 const getAllRestaurants = catchAsync(async (req: Request, res: Response) => {
     const filters: IRestaurantFilters = {

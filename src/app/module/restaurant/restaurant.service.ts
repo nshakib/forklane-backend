@@ -1,7 +1,7 @@
 import { Role } from '../../../../generated/prisma/enums'
-import { prisma } from '../../lib/prisma'
-import { IRequestUser } from '../auth/auth.interface'
-import { ICreateRestaurantPayload, IRestaurantFilters, IUpdateRestaurantPayload } from './restaurant.interface'
+import { prisma } from '../../lib/prisma.js'
+import { IRequestUser } from '../auth/auth.interface.js'
+import { ICreateRestaurantPayload, IRestaurantFilters, IUpdateRestaurantPayload } from './restaurant.interface.js'
 
 const slugify = (name: string) =>
     name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')

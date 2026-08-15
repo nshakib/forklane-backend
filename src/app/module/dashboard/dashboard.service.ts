@@ -1,7 +1,7 @@
-import { Prisma } from '../../../../generated/prisma/client'
+import { Prisma } from '../../../../generated/prisma/client.js'
 import { OrderStatus, Role } from '../../../../generated/prisma/enums'
-import { prisma } from '../../lib/prisma'
-import { IRequestUser } from '../auth/auth.interface'
+import { prisma } from '../../lib/prisma.js'
+import { IRequestUser } from '../auth/auth.interface.js'
 
 const getUserOverview = async (userId: string) => {
     const orders = await prisma.order.findMany({

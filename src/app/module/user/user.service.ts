@@ -1,6 +1,6 @@
 import { Role, UserStatus } from '../../../../generated/prisma/enums'
-import { prisma } from '../../lib/prisma'
-import { IUpdateProfilePayload, IUserFilters } from './user.interface'
+import { prisma } from '../../lib/prisma.js'
+import { IUpdateProfilePayload, IUserFilters } from './user.interface.js'
 
 const getAllUsers = async (filters: IUserFilters, page = 1, limit = 10) => {
     const { role, status, search } = filters

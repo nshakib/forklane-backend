@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import httpStatus from 'http-status'
-import { catchAsync } from '../../utils/catchAsync'
-import { sendResponse } from '../../utils/sendResponse'
-import { IChangeUserStatusPayload, IUpdateProfilePayload, IUserFilters } from './user.interface'
-import { UserService } from './user.service'
-import { IRequestUser } from '../auth/auth.interface'
+import { catchAsync } from '../../utils/catchAsync.js'
+import { sendResponse } from '../../utils/sendResponse.js'
+import { IChangeUserStatusPayload, IUpdateProfilePayload, IUserFilters } from './user.interface.js'
+import { UserService } from './user.service.js'
+import { IRequestUser } from '../auth/auth.interface.js'
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     const filters: IUserFilters = {
