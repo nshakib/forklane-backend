@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: my-node-app          # change to your service name
+    runtime: node
+    plan: free                 # or starter / standard / pro
+    region: oregon             # or frankfurt, singapore, ohio, virginia
+    branch: main                # branch to auto-deploy from
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /          # change if you have a dedicated health check route
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      # Add your other env vars here, e.g.:
+      # - key: DATABASE_URL
+      #   sync: false          # sync: false means you'll set the value in the dashboard, not in this file
