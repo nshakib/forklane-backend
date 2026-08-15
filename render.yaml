@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-node-app          # change to your service name
+    name: forklane-order.uk          # change to your service name
     runtime: node
     plan: free                 # or starter / standard / pro
     region: oregon             # or frankfurt, singapore, ohio, virginia
